@@ -71,7 +71,14 @@ var UIController = (function () {
     addValue : '.add__value',
     addButtun : '.add__btn',
     incomeContainer : '.income__list',
-    expensesContainer : '.expenses__list'
+    expensesContainer : '.expenses__list',
+    budgetLabel: '.budget__value',
+    incomeLabel: '.budget__income--value',
+    expensesLabel: '.budget__expenses--value',
+    percentageLabel: '.budget__expenses--percentage',
+    container: '.container',
+    expensesPercLabel: '.item__percentage',
+    dateLabel: '.budget__title--month'
 
   };
   return {
@@ -115,6 +122,19 @@ var UIController = (function () {
       fieldsArr[0].focus();
     },
 
+    displayBudget :function (obj) {
+      document.querySelector(DOMstring.budgetLabel).textContent = obj.budget;
+      document.querySelector(DOMstring.incomeLabel).textContent = obj.totalInc;
+      document.querySelector(DOMstring.expensesLabel).textContent = obj.totalExp;
+
+          if (obj.percentage > 0) {
+                        document.querySelector(DOMstring.percentageLabel).textContent = obj.percentage +'%';
+
+      }else {
+        document.querySelector(DOMstring.percentageLabel).textContent = '---';
+
+      }
+    },
     getDOMstrings : function () {
         return DOMstring;
     }
@@ -138,11 +158,12 @@ var controller = (function(budgetCtrl, UICtrl) {
                 ctrlAddItem();
             }
         });
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
       };
       var updateBudget = function () {
         budgetCtrl.calculateBudget();
         var budget = budgetCtrl.getBudget();
-        console.log(budget);
+        UICtrl.displayBudget(budget);
       }
   var ctrlAddItem = function() {
         var input, newItem;
@@ -168,10 +189,26 @@ var controller = (function(budgetCtrl, UICtrl) {
          }
     };
 
+    var ctrlDeleteItem = function (event) {
+      var itemID,splitID, type,ID;
+      itemID = event.target.parentNode.parentNode.parentNode.parentNode.id ;
+      if(itemID){
+        splitID = itemID.split('-');;
+        type = splitID[0];
+        ID = splitID[1];
+      }
+
+    };
+
     return {
         init: function() {
             console.log('Application has started.');
-
+            UICtrl.displayBudget({
+                budget: 0,
+                totalInc: 0,
+                totalExp: 0,
+                percentage: -1
+            });
             setupEventListeners();
         }
     };
