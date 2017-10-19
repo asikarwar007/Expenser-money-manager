@@ -29,19 +29,29 @@ var UIController = (function () {
 })();
 
 var controller = (function (budgetCtrl,UICtrl) {
-   var DOM = UICtrl.getDOMstrings();
+  var setupEventListener = function () {
+      var DOM = UICtrl.getDOMstrings();
+      document.querySelector(DOM.addButtun).addEventListener('click',controllerAddItem);
+      document.addEventListener('Keypress',function(event) {
+        if(event.keycode === 13 || event.which === 13){
+          controllerAddItem();
+
+        }
+      });
+  };
+
+
   var controllerAddItem = function() {
 
     var input = UICtrl.getInput();
     console.log(input);
   };
-
-  document.querySelector(DOM.addButtun).addEventListener('click',controllerAddItem);
-  document.addEventListener('Keypress',function(event) {
-    if(event.keycode === 13 || event.which === 13){
-      controllerAddItem();
-
+  return {
+    init : function () {
+      setupEventListener();
     }
-  });
+  };
 
 })(budgetController, UIController);
+
+  controller.init();
