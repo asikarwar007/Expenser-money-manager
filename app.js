@@ -130,7 +130,7 @@ var UIController = (function () {
           callback(list[i], i);
       }
   };
-  
+
   return {
     getInput : function () {
       return {
@@ -271,7 +271,7 @@ var controller = (function(budgetCtrl, UICtrl) {
             updateBudget();
             //
             // // 6. Calculate and update percentages
-            // updatePercentages();
+            updatePercentages();
          }
     };
 
